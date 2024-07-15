@@ -12,7 +12,10 @@
   </dd>
   <dt>
     <a href="#getEvm2EvmMessage">getEvm2EvmMessage(receipt)</a> ⇒{' '}
-    <code>object</code> | <code>null</code>
+    <code>
+      <a href="#Evm2EvmMessage">Evm2EvmMessage</a>
+    </code>{' '}
+    | <code>null</code>
   </dt>
   <dd>
     <p>
@@ -33,6 +36,15 @@
   </dd>
 </dl>
 
+## Typedefs
+
+<dl>
+  <dt>
+    <a href="#Evm2EvmMessage">Evm2EvmMessage</a> : <code>Object</code>
+  </dt>
+  <dd></dd>
+</dl>
+
 <a name="requestLinkFromTheFaucet"></a>
 
 ## requestLinkFromTheFaucet(linkAddress, to, amount) ⇒ <code>Promise.&lt;string&gt;</code>
@@ -51,15 +63,16 @@ transaction hash of the fund transfer
 
 <a name="getEvm2EvmMessage"></a>
 
-## getEvm2EvmMessage(receipt) ⇒ <code>object</code> \| <code>null</code>
+## getEvm2EvmMessage(receipt) ⇒ [<code>Evm2EvmMessage</code>](#Evm2EvmMessage) \| <code>null</code>
 
 Parses a transaction receipt to extract the sent message Scans through
 transaction logs to find a `CCIPSendRequested` event and then decodes it to an
 object
 
 **Kind**: global function  
-**Returns**: <code>object</code> \| <code>null</code> - Returns either the sent
-message or null if provided receipt does not contain `CCIPSendRequested` log
+**Returns**: [<code>Evm2EvmMessage</code>](#Evm2EvmMessage) \|
+<code>null</code> - Returns either the sent message or null if provided receipt
+does not contain `CCIPSendRequested` log
 
 | Param   | Type                | Description                                      |
 | ------- | ------------------- | ------------------------------------------------ |
@@ -80,7 +93,30 @@ if the message is successfully routed, or reverts
 - <code>Error</code> Fails if no off-ramp matches the message's source chain
   selector or if calling `router.getOffRamps()`
 
-| Param          | Type                | Description                       |
-| -------------- | ------------------- | --------------------------------- |
-| routerAddress  | <code>string</code> | Address of the destination Router |
-| evm2EvmMessage | <code>object</code> | Sent cross-chain message          |
+| Param          | Type                                           | Description                       |
+| -------------- | ---------------------------------------------- | --------------------------------- |
+| routerAddress  | <code>string</code>                            | Address of the destination Router |
+| evm2EvmMessage | [<code>Evm2EvmMessage</code>](#Evm2EvmMessage) | Sent cross-chain message          |
+
+<a name="Evm2EvmMessage"></a>
+
+## Evm2EvmMessage : <code>Object</code>
+
+**Kind**: global typedef  
+**Properties**
+
+| Name                | Type                                                        |
+| ------------------- | ----------------------------------------------------------- |
+| sourceChainSelector | <code>bigint</code>                                         |
+| sender              | <code>string</code>                                         |
+| receiver            | <code>string</code>                                         |
+| sequenceNumber      | <code>bigint</code>                                         |
+| gasLimit            | <code>bigint</code>                                         |
+| strict              | <code>boolean</code>                                        |
+| nonce               | <code>bigint</code>                                         |
+| feeToken            | <code>string</code>                                         |
+| feeTokenAmount      | <code>bigint</code>                                         |
+| data                | <code>string</code>                                         |
+| tokenAmounts        | <code>Array.&lt;\{token: string, amount: bigint}&gt;</code> |
+| sourceTokenData     | <code>Array.&lt;string&gt;</code>                           |
+| messageId           | <code>string</code>                                         |
