@@ -22,15 +22,23 @@
     "hardhat-test": "npx hardhat test",
     "forge-test": "forge test",
     "test": "npm run hardhat-test && npm run forge-test",
-    "generate-apiref": "npm run hardhat-compile && npm run forge-compile && npx hardhat docgen && npx ts-node generate-index-files.ts"
+    "prettier": "prettier --write 'api_reference/**/*'",
+    "generate-solidity": "rimraf api_reference/solidity && npm run hardhat-compile && npm run forge-compile && npx hardhat docgen",
+    "generate-jsdoc": "rimraf api_reference/javascript && npx ts-node helper_doc/generate-jsdoc.ts",
+    "generate-index": "npx ts-node helper_doc/generate-index-files.ts",
+    "generate-docs": "npm run generate-solidity && npm run generate-jsdoc && npm run generate-index && npm run prettier"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-foundry": "^1.1.1",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "@types/fs-extra": "^11.0.4",
+    "@types/jsdoc-to-markdown": "^7.0.6",
     "dotenv": "^16.4.5",
     "fs-extra": "^11.2.0",
     "hardhat": "^2.20.1",
+    "jsdoc-to-markdown": "^8.0.1",
+    "prettier": "^3.3.3",
+    "rimraf": "^6.0.1",
     "solidity-docgen": "^0.6.0-beta.36"
   },
   "dependencies": {

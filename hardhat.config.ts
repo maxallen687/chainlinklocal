@@ -17,7 +17,7 @@ const config: HardhatUserConfig = {
     pageExtension: ".mdx",
     templates: "custom_templates",
     exclude: ["test"],
-    outputDir: "api_reference",
+    outputDir: "api_reference/solidity",
   },
 };
 

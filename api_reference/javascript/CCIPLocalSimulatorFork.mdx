@@ -1,0 +1,86 @@
+## Functions
+
+<dl>
+  <dt>
+    <a href="#requestLinkFromTheFaucet">
+      requestLinkFromTheFaucet(linkAddress, to, amount)
+    </a>{' '}
+    ⇒ <code>Promise.&lt;string&gt;</code>
+  </dt>
+  <dd>
+    <p>Requests LINK tokens from the faucet and returns the transaction hash</p>
+  </dd>
+  <dt>
+    <a href="#getEvm2EvmMessage">getEvm2EvmMessage(receipt)</a> ⇒{' '}
+    <code>object</code> | <code>null</code>
+  </dt>
+  <dd>
+    <p>
+      Parses a transaction receipt to extract the sent message Scans through
+      transaction logs to find a <code>CCIPSendRequested</code> event and then
+      decodes it to an object
+    </p>
+  </dd>
+  <dt>
+    <a href="#routeMessage">routeMessage(routerAddress, evm2EvmMessage)</a> ⇒{' '}
+    <code>Promise.&lt;void&gt;</code>
+  </dt>
+  <dd>
+    <p>
+      Routes the sent message from the source network on the destination
+      (current) network
+    </p>
+  </dd>
+</dl>
+
+<a name="requestLinkFromTheFaucet"></a>
+
+## requestLinkFromTheFaucet(linkAddress, to, amount) ⇒ <code>Promise.&lt;string&gt;</code>
+
+Requests LINK tokens from the faucet and returns the transaction hash
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;string&gt;</code> - Promise resolving to the
+transaction hash of the fund transfer
+
+| Param       | Type                | Description                                             |
+| ----------- | ------------------- | ------------------------------------------------------- |
+| linkAddress | <code>string</code> | The address of the LINK contract on the current network |
+| to          | <code>string</code> | The address to send LINK to                             |
+| amount      | <code>bigint</code> | The amount of LINK to request                           |
+
+<a name="getEvm2EvmMessage"></a>
+
+## getEvm2EvmMessage(receipt) ⇒ <code>object</code> \| <code>null</code>
+
+Parses a transaction receipt to extract the sent message Scans through
+transaction logs to find a `CCIPSendRequested` event and then decodes it to an
+object
+
+**Kind**: global function  
+**Returns**: <code>object</code> \| <code>null</code> - Returns either the sent
+message or null if provided receipt does not contain `CCIPSendRequested` log
+
+| Param   | Type                | Description                                      |
+| ------- | ------------------- | ------------------------------------------------ |
+| receipt | <code>object</code> | The transaction receipt from the `ccipSend` call |
+
+<a name="routeMessage"></a>
+
+## routeMessage(routerAddress, evm2EvmMessage) ⇒ <code>Promise.&lt;void&gt;</code>
+
+Routes the sent message from the source network on the destination (current)
+network
+
+**Kind**: global function  
+**Returns**: <code>Promise.&lt;void&gt;</code> - Either resolves with no value
+if the message is successfully routed, or reverts  
+**Throws**:
+
+- <code>Error</code> Fails if no off-ramp matches the message's source chain
+  selector or if calling `router.getOffRamps()`
+
+| Param          | Type                | Description                       |
+| -------------- | ------------------- | --------------------------------- |
+| routerAddress  | <code>string</code> | Address of the destination Router |
+| evm2EvmMessage | <code>object</code> | Sent cross-chain message          |

@@ -2,7 +2,7 @@ import fs from "fs-extra";
 import path from "path";
 
 const MDX_EXTENSION = ".mdx";
-const rootDir = path.join(__dirname, "api_reference");
+const rootDir = path.join(process.cwd(), "api_reference");
 
 const generateIndexFile = async (dir: string, header: string) => {
   const files = await fs.readdir(dir);
