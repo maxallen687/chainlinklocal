@@ -4,4 +4,11 @@ pragma solidity ^0.8.0;
 import {AggregatorInterface} from "./AggregatorInterface.sol";
 import {AggregatorV3Interface} from "./AggregatorV3Interface.sol";
 
-interface AggregatorV2V3Interface is AggregatorInterface, AggregatorV3Interface {}
+/// @title AggregatorV2V3Interface
+/// @notice Interface that inherits from both AggregatorInterface and AggregatorV3Interface.
+interface AggregatorV2V3Interface is
+    AggregatorInterface,
+    AggregatorV3Interface
+{
+
+}

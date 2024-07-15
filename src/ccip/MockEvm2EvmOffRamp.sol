@@ -16,6 +16,8 @@ import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-sol
 import {Address} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/Address.sol";
 import {ERC165Checker} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/utils/introspection/ERC165Checker.sol";
 
+/// @title MockEvm2EvmOffRamp
+/// @notice This contract handles off-ramp processes for CCIP messages
 contract MockEvm2EvmOffRamp is AggregateRateLimiter {
     using EnumerableMapAddresses for EnumerableMapAddresses.AddressToAddressMap;
     using USDPriceWith18Decimals for uint224;
@@ -31,19 +33,43 @@ contract MockEvm2EvmOffRamp is AggregateRateLimiter {
         uint32 maxPoolReleaseOrMintGas; // ─╯ Maximum amount of gas passed on to token pool when calling releaseOrMint
     }
 
+    /// @dev chain selector for the source chain
     uint64 internal immutable i_sourceChainSelector;
 
+    /// @dev Address of the CCIP Local Simulator
     address internal s_ccipLocalSimulator;
+
+    /// @dev Dynamic configuration of the offramp
     DynamicConfig internal s_dynamicConfig;
 
-    /// @dev source token => token pool
+    /// @dev Map from source token to token pool
     EnumerableMapAddresses.AddressToAddressMap private s_poolsBySourceToken;
 
+    /// @dev Error thrown when a function can only be called by the simulator
     error CanOnlySimulatorCall();
+
+    /// @dev Error thrown when there is an error in the receiver
+    /// @param error The error data
     error ReceiverError(bytes error);
+
+    /// @dev Error thrown when there is an error in token handling
+    /// @param error The error data
     error TokenHandlingError(bytes error);
+
+    /// @dev Error thrown when an unsupported token is encountered
+    /// @param token The unsupported token
     error UnsupportedToken(IERC20 token);
 
+    /**
+     * @notice Constructor to initialize the contract.
+     *
+     * @param ccipLocalSimulator - Address of the CCIP local simulator.
+     * @param dynamicConfig - Initial dynamic configuration parameters.
+     * @param config - Rate limiter configuration.
+     * @param sourceChainSelector - Source chain selector.
+     * @param sourceTokens - List of supported tokens on the source chain.
+     * @param pools - List of pools corresponding to the supported tokens on the source chain.
+     */
     constructor(
         address ccipLocalSimulator,
         DynamicConfig memory dynamicConfig,
@@ -66,6 +92,12 @@ contract MockEvm2EvmOffRamp is AggregateRateLimiter {
         }
     }
 
+    /**
+     * @notice Executes a single CCIP message.
+     *
+     * @param message - The CCIP message to be executed.
+     * @param offchainTokenData - Additional off-chain token data.
+     */
     function executeSingleMessage(
         Internal.EVM2EVMMessage memory message,
         bytes[] memory offchainTokenData
@@ -102,15 +134,20 @@ contract MockEvm2EvmOffRamp is AggregateRateLimiter {
         if (!success) revert ReceiverError(returnData);
     }
 
-    /// @notice Uses pools to release or mint a number of different tokens to a receiver address.
-    /// @param sourceTokenAmounts List of tokens and amount values to be released/minted.
-    /// @param originalSender The message sender.
-    /// @param receiver The address that will receive the tokens.
-    /// @param sourceTokenData Array of token data returned by token pools on the source chain.
-    /// @param offchainTokenData Array of token data fetched offchain by the DON.
-    /// @dev This function wrappes the token pool call in a try catch block to gracefully handle
-    /// any non-rate limiting errors that may occur. If we encounter a rate limiting related error
-    /// we bubble it up. If we encounter a non-rate limiting error we wrap it in a TokenHandlingError.
+    /**
+     * @notice Uses pools to release or mint a number of different tokens to a receiver address.
+     *
+     * @param sourceTokenAmounts - List of tokens and amount values to be released/minted.
+     * @param originalSender - The message sender.
+     * @param receiver - The address that will receive the tokens.
+     * @param sourceTokenData - Array of token data returned by token pools on the source chain.
+     * @param offchainTokenData - Array of token data fetched offchain by the DON.
+     * @return destTokenAmounts - The amounts of tokens released or minted.
+     *
+     * @dev This function wraps the token pool call in a try-catch block to gracefully handle
+     * any non-rate limiting errors that may occur. If we encounter a rate limiting related error
+     * we bubble it up. If we encounter a non-rate limiting error we wrap it in a TokenHandlingError.
+     */
     function _releaseOrMintTokens(
         Client.EVMTokenAmount[] memory sourceTokenAmounts,
         bytes memory originalSender,
@@ -160,9 +197,12 @@ contract MockEvm2EvmOffRamp is AggregateRateLimiter {
         return destTokenAmounts;
     }
 
-    /// @notice Get a token pool by its source token
-    /// @param sourceToken token
-    /// @return Token Pool
+    /**
+     * @notice Get a token pool by its source token.
+     *
+     * @param sourceToken - The source token.
+     * @return pool - The corresponding token pool.
+     */
     function getPoolBySourceToken(
         IERC20 sourceToken
     ) public view returns (IPool) {

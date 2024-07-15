@@ -21,13 +21,17 @@
     "forge-compile": "forge build",
     "hardhat-test": "npx hardhat test",
     "forge-test": "forge test",
-    "test": "npm run hardhat-test && npm run forge-test"
+    "test": "npm run hardhat-test && npm run forge-test",
+    "generate-apiref": "npm run hardhat-compile && npm run forge-compile && npx hardhat docgen && npx ts-node generate-index-files.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-foundry": "^1.1.1",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@types/fs-extra": "^11.0.4",
     "dotenv": "^16.4.5",
-    "hardhat": "^2.20.1"
+    "fs-extra": "^11.2.0",
+    "hardhat": "^2.20.1",
+    "solidity-docgen": "^0.6.0-beta.36"
   },
   "dependencies": {
     "@chainlink/contracts": "^1.1.1",
