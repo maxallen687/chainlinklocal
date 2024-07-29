@@ -9,19 +9,36 @@ import {IRouterClient} from "@chainlink/contracts-ccip/src/v0.8/ccip/interfaces/
 import {IERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/IERC20.sol";
 import {SafeERC20} from "@chainlink/contracts-ccip/src/v0.8/vendor/openzeppelin-solidity/v4.8.3/contracts/token/ERC20/utils/SafeERC20.sol";
 
+/// @title CCIPLocalSimulator
+/// @notice This contract simulates local CCIP (Cross-Chain Interoperability Protocol) operations for testing and development purposes.
+/// @dev This contract includes methods to manage supported tokens and configurations for local simulations.
 contract CCIPLocalSimulator {
     using SafeERC20 for IERC20;
 
+    /// @notice The unique CCIP Chain Selector constant
     uint64 constant CHAIN_SELECTOR = 16015286601757825753;
 
+    /// @notice The wrapped native token instance
     WETH9 internal immutable i_wrappedNative;
+
+    /// @notice The LINK token instance
     LinkToken internal immutable i_linkToken;
+
+    /// @notice The BurnMintERC677Helper instance for CCIP-BnM token
     BurnMintERC677Helper internal immutable i_ccipBnM;
+
+    /// @notice The BurnMintERC677Helper instance for CCIP-LnM token
     BurnMintERC677Helper internal immutable i_ccipLnM;
+
+    /// @notice The mock CCIP router instance
     MockCCIPRouter internal immutable i_mockRouter;
 
+    /// @notice The list of supported token addresses
     address[] internal s_supportedTokens;
 
+    /**
+     * @notice Constructor to initialize the contract and pre-deployed token instances
+     */
     constructor() {
         i_wrappedNative = new WETH9();
         i_linkToken = new LinkToken();

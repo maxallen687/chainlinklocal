@@ -25,11 +25,28 @@ async function requestLinkFromTheFaucet(linkAddress, to, amount) {
 }
 
 /**
+ * @typedef {Object} Evm2EvmMessage
+ * @property {bigint} sourceChainSelector
+ * @property {string} sender
+ * @property {string} receiver
+ * @property {bigint} sequenceNumber
+ * @property {bigint} gasLimit
+ * @property {boolean} strict
+ * @property {bigint} nonce
+ * @property {string} feeToken
+ * @property {bigint} feeTokenAmount
+ * @property {string} data
+ * @property {Array<{token: string, amount: bigint}>} tokenAmounts
+ * @property {Array<string>} sourceTokenData
+ * @property {string} messageId
+ */
+
+/**
  * Parses a transaction receipt to extract the sent message
  * Scans through transaction logs to find a `CCIPSendRequested` event and then decodes it to an object
  *
  * @param {object} receipt - The transaction receipt from the `ccipSend` call
- * @returns {object | null} Returns either the sent message or null if provided receipt does not contain `CCIPSendRequested` log
+ * @returns {Evm2EvmMessage | null} Returns either the sent message or null if provided receipt does not contain `CCIPSendRequested` log
  */
 function getEvm2EvmMessage(receipt) {
     const evm2EvmOnRampInterface = new ethers.Interface(EVM2EVMOnRampAbi);
@@ -87,7 +104,7 @@ function getEvm2EvmMessage(receipt) {
  * Routes the sent message from the source network on the destination (current) network
  *
  * @param {string} routerAddress - Address of the destination Router
- * @param {object} evm2EvmMessage - Sent cross-chain message
+ * @param {Evm2EvmMessage} evm2EvmMessage - Sent cross-chain message
  * @returns {Promise<void>} Either resolves with no value if the message is successfully routed, or reverts
  * @throws {Error} Fails if no off-ramp matches the message's source chain selector or if calling `router.getOffRamps()`
  */
