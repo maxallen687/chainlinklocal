@@ -1,7 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {AggregatorInterface, AggregatorV3Interface, AggregatorV2V3Interface} from "./interfaces/AggregatorV2V3Interface.sol";
+import {
+    AggregatorInterface,
+    AggregatorV3Interface,
+    AggregatorV2V3Interface
+} from "./interfaces/AggregatorV2V3Interface.sol";
 import {MockOffchainAggregator} from "./MockOffchainAggregator.sol";
 
 /// @title MockV3Aggregator
@@ -23,9 +27,7 @@ contract MockV3Aggregator is AggregatorV2V3Interface {
      * @param _initialAnswer - The initial answer to be set in the mock aggregator.
      */
     constructor(uint8 _decimals, int256 _initialAnswer) {
-        aggregator = address(
-            new MockOffchainAggregator(_decimals, _initialAnswer)
-        );
+        aggregator = address(new MockOffchainAggregator(_decimals, _initialAnswer));
         proposedAggregator = address(0);
     }
 
@@ -39,28 +41,18 @@ contract MockV3Aggregator is AggregatorV2V3Interface {
     /**
      * @inheritdoc AggregatorInterface
      */
-    function getAnswer(
-        uint256 roundId
-    ) external view override returns (int256) {
+    function getAnswer(uint256 roundId) external view override returns (int256) {
         return AggregatorV2V3Interface(aggregator).getAnswer(roundId);
     }
 
     /**
      * @inheritdoc AggregatorV3Interface
      */
-    function getRoundData(
-        uint80 _roundId
-    )
+    function getRoundData(uint80 _roundId)
         external
         view
         override
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        )
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
         return AggregatorV2V3Interface(aggregator).getRoundData(_roundId);
     }
@@ -72,13 +64,7 @@ contract MockV3Aggregator is AggregatorV2V3Interface {
         external
         view
         override
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        )
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
         return AggregatorV2V3Interface(aggregator).latestRoundData();
     }
@@ -86,9 +72,7 @@ contract MockV3Aggregator is AggregatorV2V3Interface {
     /**
      * @inheritdoc AggregatorInterface
      */
-    function getTimestamp(
-        uint256 roundId
-    ) external view override returns (uint256) {
+    function getTimestamp(uint256 roundId) external view override returns (uint256) {
         return AggregatorV2V3Interface(aggregator).getTimestamp(roundId);
     }
 
@@ -128,18 +112,8 @@ contract MockV3Aggregator is AggregatorV2V3Interface {
      * @param _timestamp - The timestamp to be set.
      * @param _startedAt - The timestamp when the round started.
      */
-    function updateRoundData(
-        uint80 _roundId,
-        int256 _answer,
-        uint256 _timestamp,
-        uint256 _startedAt
-    ) public {
-        MockOffchainAggregator(aggregator).updateRoundData(
-            _roundId,
-            _answer,
-            _timestamp,
-            _startedAt
-        );
+    function updateRoundData(uint80 _roundId, int256 _answer, uint256 _timestamp, uint256 _startedAt) public {
+        MockOffchainAggregator(aggregator).updateRoundData(_roundId, _answer, _timestamp, _startedAt);
     }
 
     /**
@@ -147,14 +121,8 @@ contract MockV3Aggregator is AggregatorV2V3Interface {
      * @param _aggregator - The address of the proposed aggregator.
      */
     function proposeAggregator(AggregatorV2V3Interface _aggregator) external {
-        require(
-            address(_aggregator) != address(0),
-            "Proposed aggregator cannot be zero address"
-        );
-        require(
-            address(_aggregator) != aggregator,
-            "Proposed aggregator cannot be current aggregator"
-        );
+        require(address(_aggregator) != address(0), "Proposed aggregator cannot be zero address");
+        require(address(_aggregator) != aggregator, "Proposed aggregator cannot be current aggregator");
         proposedAggregator = address(_aggregator);
     }
 
@@ -163,10 +131,7 @@ contract MockV3Aggregator is AggregatorV2V3Interface {
      * @param _aggregator - The address of the proposed aggregator.
      */
     function confirmAggregator(address _aggregator) external {
-        require(
-            _aggregator == address(proposedAggregator),
-            "Invalid proposed aggregator"
-        );
+        require(_aggregator == address(proposedAggregator), "Invalid proposed aggregator");
         aggregator = proposedAggregator;
         proposedAggregator = address(0);
     }

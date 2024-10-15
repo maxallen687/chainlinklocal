@@ -6,7 +6,7 @@ The package exposes a set of smart contracts and scripts with which you build, d
 
 User Contracts tested with Chainlink Local can be deployed to test networks without any modifications (assuming network specific contract addresses such as Router contracts and LINK token addresses are passed in via a constructor).
 
-To view more detailed documentation and more examples, visit the [Chainlink Local Documentation](https://cll-devrel.gitbook.io/chainlink-local-documentation).
+To view more detailed documentation and more examples, visit the [Chainlink Local Documentation](https://docs.chain.link/chainlink-local).
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=rEVjU9tOf74&list=PL3ZUTf1nxlFyHKswTYFa2tffUsR94KAEv">
@@ -78,7 +78,7 @@ contract Demo is Test {
 
 ### Learn more
 
-To view detailed documentation and more examples, visit the [Chainlink Local Documentation](https://cll-devrel.gitbook.io/chainlink-local-documentation).
+To view detailed documentation and more examples, visit the [Chainlink Local Documentation](https://docs.chain.link/chainlink-local).
 
 > **Note**
 >

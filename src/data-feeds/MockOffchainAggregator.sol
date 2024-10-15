@@ -9,8 +9,7 @@ contract MockOffchainAggregator {
     int192 private constant MIN_ANSWER_POSSIBLE = 1;
 
     /// @notice The maximum possible answer the aggregator can report.
-    int192 private constant MAX_ANSWER_POSSIBLE =
-        95780971304118053647396689196894323976171195136475135; // type(uint176).max
+    int192 private constant MAX_ANSWER_POSSIBLE = 95780971304118053647396689196894323976171195136475135; // type(uint176).max
 
     /// @notice The number of decimals used by the aggregator.
     uint8 public decimals;
@@ -71,12 +70,7 @@ contract MockOffchainAggregator {
      * @param _timestamp - The timestamp to be set.
      * @param _startedAt - The timestamp when the round started.
      */
-    function updateRoundData(
-        uint80 _roundId,
-        int256 _answer,
-        uint256 _timestamp,
-        uint256 _startedAt
-    ) public {
+    function updateRoundData(uint80 _roundId, int256 _answer, uint256 _timestamp, uint256 _startedAt) public {
         latestRound = _roundId;
         latestAnswer = _answer;
         latestTimestamp = _timestamp;
@@ -94,26 +88,12 @@ contract MockOffchainAggregator {
      * @return updatedAt - The timestamp when the round was updated.
      * @return answeredInRound - The round ID in which the answer was computed.
      */
-    function getRoundData(
-        uint80 _roundId
-    )
+    function getRoundData(uint80 _roundId)
         external
         view
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        )
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
-        return (
-            _roundId,
-            getAnswer[_roundId],
-            getStartedAt[_roundId],
-            getTimestamp[_roundId],
-            _roundId
-        );
+        return (_roundId, getAnswer[_roundId], getStartedAt[_roundId], getTimestamp[_roundId], _roundId);
     }
 
     /**
@@ -127,13 +107,7 @@ contract MockOffchainAggregator {
     function latestRoundData()
         external
         view
-        returns (
-            uint80 roundId,
-            int256 answer,
-            uint256 startedAt,
-            uint256 updatedAt,
-            uint80 answeredInRound
-        )
+        returns (uint80 roundId, int256 answer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound)
     {
         return (
             uint80(latestRound),
@@ -149,14 +123,8 @@ contract MockOffchainAggregator {
      * @param _minAnswer - The new minimum answer.
      * @param _maxAnswer - The new maximum answer.
      */
-    function updateMinAndMaxAnswers(
-        int192 _minAnswer,
-        int192 _maxAnswer
-    ) external {
-        require(
-            _minAnswer < _maxAnswer,
-            "minAnswer must be less than maxAnswer"
-        );
+    function updateMinAndMaxAnswers(int192 _minAnswer, int192 _maxAnswer) external {
+        require(_minAnswer < _maxAnswer, "minAnswer must be less than maxAnswer");
         require(_minAnswer >= MIN_ANSWER_POSSIBLE, "minAnswer is too low");
         require(_maxAnswer <= MAX_ANSWER_POSSIBLE, "maxAnswer is too high");
 

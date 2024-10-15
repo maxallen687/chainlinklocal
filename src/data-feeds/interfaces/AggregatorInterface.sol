@@ -43,11 +43,7 @@ interface AggregatorInterface {
      * @param roundId - The round ID for which the answer was updated.
      * @param updatedAt - The timestamp when the answer was updated.
      */
-    event AnswerUpdated(
-        int256 indexed current,
-        uint256 indexed roundId,
-        uint256 updatedAt
-    );
+    event AnswerUpdated(int256 indexed current, uint256 indexed roundId, uint256 updatedAt);
 
     /**
      * @notice Emitted when a new round is started.
@@ -55,9 +51,5 @@ interface AggregatorInterface {
      * @param startedBy - The address of the account that started the round.
      * @param startedAt - The timestamp when the round was started.
      */
-    event NewRound(
-        uint256 indexed roundId,
-        address indexed startedBy,
-        uint256 startedAt
-    );
+    event NewRound(uint256 indexed roundId, address indexed startedBy, uint256 startedAt);
 }

@@ -6,9 +6,4 @@ import {AggregatorV3Interface} from "./AggregatorV3Interface.sol";
 
 /// @title AggregatorV2V3Interface
 /// @notice Interface that inherits from both AggregatorInterface and AggregatorV3Interface.
-interface AggregatorV2V3Interface is
-    AggregatorInterface,
-    AggregatorV3Interface
-{
-
-}
+interface AggregatorV2V3Interface is AggregatorInterface, AggregatorV3Interface {}
