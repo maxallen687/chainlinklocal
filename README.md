@@ -26,6 +26,13 @@ forge install smartcontractkit/chainlink-local
 
 and then set remappings to: `@chainlink/local/=lib/chainlink-local/` in either `remappings.txt` or `foundry.toml` file
 
+#### Foundry (soldeer)
+
+```
+forge soldeer install chainlink-local~v0.2.4-beta https://github.com/smartcontractkit/chainlink-local.git
+```
+Replace `v0.2.4-beta` with your desired version number.
+
 #### Hardhat (npm)
 
 ```

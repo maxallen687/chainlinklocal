@@ -2,11 +2,12 @@
   "name": "@chainlink/local",
   "description": "Chainlink Local Simulator",
   "license": "MIT",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "files": [
     "src/**/*.sol",
     "!src/test/**/*",
     "scripts/ccipLocalSimulatorFork.js",
+    "scripts/data-streams/**/*.js",
     "abi/**/*.json"
   ],
   "repository": {
@@ -42,7 +43,7 @@
     "solidity-docgen": "^0.6.0-beta.36"
   },
   "dependencies": {
-    "@chainlink/contracts": "^1.1.1",
+    "@chainlink/contracts": "^1.3.0",
     "@chainlink/contracts-ccip": "^1.5.1-beta.0"
   }
 }
