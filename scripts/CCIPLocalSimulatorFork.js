@@ -135,7 +135,7 @@ async function routeMessage(routerAddress, evm2EvmMessage) {
         }
     }
 
-    throw new Error(`No offRamp contract found, message has not been routed. Check your input parameters please`);
+    throw new Error(`No offRamp contract found, message has not been routed. Check your input parameters`);
 }
 
 module.exports = {
